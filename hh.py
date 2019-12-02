@@ -69,6 +69,11 @@ def g_n(V, n):
 	return ((4 * g_K * n**3 * (V - E_K)) * (dalphan_dV(V) - n * (dalphan_dV(V) + dbetan_dV(V)))) / (alpha_n(V) + beta_n(V))
 def L_n(V, n):
 	return 1 / (g_n(V, n) * (alpha_n(V) + beta_n(V)))
+def g_m(V, m, h):
+	return (3 * g_Na * (m**2) * h * (V - E_Na)) * (dalpham_dV(V) - m * (dalpham_dV(V) + dbetam_dV(V))) / (alpha_m(V) + beta_m(V))
+def L_m(V, m, h):
+	return 1 / (g_m(V, m, h) * (alpha_m(V) + beta_m(V)))
+
 
 # The time to integrate over
 t = sp.arange(0.0, 400.0, 0.1)
