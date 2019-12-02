@@ -1,6 +1,6 @@
 # Hodgkin-Huxley Model
 Original and linearized implementations in Python.
-***
+**Linearization not working properly yet!**
 ### References:
 * Python implementation of the original model adapted from this [GitHub Gist](https://gist.github.com/slarson/37463b35ef8606629d2e).
 * Original model proposed by [Hodgkin and Huxley (1952)](https://doi.org/10.1113/jphysiol.1952.sp004764).

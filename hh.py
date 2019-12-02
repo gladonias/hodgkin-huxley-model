@@ -123,8 +123,8 @@ def dALLdt(X, t):
 	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
 	return dVdt, dmdt, dhdt, dndt
 
-# X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for original HH behaviour
-X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for linearized HH behaviour
+X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for original HH behaviour
+# X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for linearized HH behaviour
 
 # Split results into their respective variables
 V = X[:,0]
