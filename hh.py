@@ -59,6 +59,10 @@ def dalpham_dV(V):
 	return (((0.1 * V + 4.0) * np.exp(-(V/10) - 4)) / (10 * ((np.exp(-(V/10) - 4) + 1) ** 2))) + (0.1 / (np.exp(-(V/10) - 4) + 1))
 def dbetam_dV(V):
 	return -np.exp(-(V/20) - (13/4)) / 5
+def dalphah_dV(V):
+	return -0.0035 * np.exp(-(V/20) - (13/4))
+def dbetah_dV(V):
+	return np.exp(-(V/20)-(7/4)) / (20 * ((np.exp(-(V/20)-(7/4)) + 1) ** 2))
 
 # The time to integrate over
 t = sp.arange(0.0, 400.0, 0.1)
