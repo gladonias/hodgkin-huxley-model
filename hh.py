@@ -49,3 +49,16 @@ def I_L(V):
 
 # The time to integrate over
 t = sp.arange(0.0, 400.0, 0.1)
+
+# Integrate
+def dALLdt(X, t):
+	V, m, h, n = X
+	
+	#calculate membrane potential & activation variables
+	dVdt = (I_inj(t) - I_Na(V, m, h) - I_K(V, n) - I_L(V)) / C_m
+	dmdt = alpha_m(V)*(1.0-m) - beta_m(V)*m
+	dhdt = alpha_h(V)*(1.0-h) - beta_h(V)*h
+	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
+	return dVdt, dmdt, dhdt, dndt
+	
+X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t)
