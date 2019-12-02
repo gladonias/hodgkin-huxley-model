@@ -68,6 +68,43 @@ V = X[:,0]
 m = X[:,1]
 h = X[:,2]
 n = X[:,3]
-ina = I_Na(V,m,h)
+ina = I_Na(V, m, h)
 ik = I_K(V, n)
 il = I_L(V)
+
+# Plotting parameters
+plt.figure()
+
+plt.subplot(4,1,1)
+plt.title('Hodgkin-Huxley Neuron')
+plt.plot(t, V, 'k')
+plt.ylabel('V (mV)')
+plt.grid(which='both', axis='both', linestyle=':')
+
+plt.subplot(4,1,2)
+plt.plot(t, ina, 'c', label='$I_{Na}$')
+plt.plot(t, ik, 'y', label='$I_{K}$')
+plt.plot(t, il, 'm', label='$I_{L}$')
+plt.ylabel('Current')
+plt.grid(which='both', axis='both', linestyle=':')
+plt.legend()
+
+plt.subplot(4,1,3)
+plt.plot(t, m, 'r', label='m')
+plt.plot(t, h, 'g', label='h')
+plt.plot(t, n, 'b', label='n')
+plt.ylabel('Gating Value')
+plt.grid(which='both', axis='both', linestyle=':')
+plt.legend()
+
+plt.subplot(4,1,4)
+plt.plot(t, I_inj(t), 'k')
+plt.xlabel('t (ms)')
+plt.ylabel('$I_{inj}$ ($\\mu{A}/cm^2$)')
+plt.ylim(-1, 31)
+plt.grid(which='both', axis='both', linestyle=':')
+
+plt.tight_layout()
+# plt.show()
+plt.savefig('hh.pdf', format='pdf', dpi=150)
+plt.close()
