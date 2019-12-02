@@ -78,6 +78,11 @@ def g_h(V, m, h):
 def L_h(V, m, h):
 	return 1 / (g_h(V, m, h) * (alpha_h(V), beta_h(V)))
 
+# Current on a RL branch
+def current_RL(V, g, L, T):
+	R = 1/g
+	tau = R * L
+	return V * (1 - np.exp(-T/tau)) / R
 
 # The time to integrate over
 t = sp.arange(0.0, 400.0, 0.1)
