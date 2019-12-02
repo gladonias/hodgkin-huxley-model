@@ -64,6 +64,12 @@ def dalphah_dV(V):
 def dbetah_dV(V):
 	return np.exp(-(V/20)-(7/4)) / (20 * ((np.exp(-(V/20)-(7/4)) + 1) ** 2))
 
+# Coil-like elements for linearization
+def g_n(V, n):
+	return ((4 * g_K * n**3 * (V - E_K)) * (dalphan_dV(V) - n * (dalphan_dV(V) + dbetan_dV(V)))) / (alpha_n(V) + beta_n(V))
+def L_n(V, n):
+	return 1 / (g_n(V, n) * (alpha_n(V) + beta_n(V)))
+
 # The time to integrate over
 t = sp.arange(0.0, 400.0, 0.1)
 
