@@ -50,6 +50,12 @@ def I_L(V):
 def I_inj(t):
 	return 10*(t>100) - 10*(t>300)
 
+# Derivatives of the channel gating kinetics
+def dalphan_dV(V):
+	return (0.01 / (1 - np.exp(-(V/10)-(11/2)))) - ((0.01 * V + 0.55) * np.exp(-(V/10)-(11/12))) / (10 * ((1 - np.exp(-(V/10)-(11/2))) ** 2))
+def dbetan_dV(V):
+	return -0.0015625 * np.exp(-(V/80)-(13/16))
+
 # The time to integrate over
 t = sp.arange(0.0, 400.0, 0.1)
 
