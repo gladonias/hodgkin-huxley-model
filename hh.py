@@ -62,3 +62,12 @@ def dALLdt(X, t):
 	return dVdt, dmdt, dhdt, dndt
 	
 X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t)
+
+# Split results into their respective variables
+V = X[:,0]
+m = X[:,1]
+h = X[:,2]
+n = X[:,3]
+ina = I_Na(V,m,h)
+ik = I_K(V, n)
+il = I_L(V)
