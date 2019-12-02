@@ -87,9 +87,9 @@ def h_inf(V):
 	return alpha_h(V) / (alpha_h(V) + beta_h(V))
 
 # Pure conductances
-def G_K(V):
-	return g_K * (n_inf(V) ** 4) * V
-def G_Na(V, m, h):
+def G_K(n):
+	return g_K * (n ** 4)
+def G_Na(m, h):
 	return g_Na * (m ** 3) * h
 
 # Current on a RL branch
@@ -106,7 +106,7 @@ def Linear_dALLdt(X, t):
 	V, m, h, n = X
 
 	# Calculate membrance potential and gating variables
-	dVdt = (I_inj(t) - I_L(V) - (G_K(V) * V + current_RL(V, g_n(V, n), L_n(V, n), t)) - (G_Na(V, m, h) * V + current_RL(V, g_m(V, m, h), L_m(V, m, h), t) + current_RL(V, g_h(V, m, h), L_h(V, m, h), t))) / C_m
+	dVdt = (I_inj(t) - I_L(V) - (G_K(n) * V + current_RL(V, g_n(V, n), L_n(V, n), t)) - (G_Na(m, h) * V + current_RL(V, g_m(V, m, h), L_m(V, m, h), t) + current_RL(V, g_h(V, m, h), L_h(V, m, h), t))) / C_m
 	dmdt = alpha_m(V)*(1.0-m) - beta_m(V)*m
 	dhdt = alpha_h(V)*(1.0-h) - beta_h(V)*h
 	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
@@ -123,8 +123,8 @@ def dALLdt(X, t):
 	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
 	return dVdt, dmdt, dhdt, dndt
 
-X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for original HH behaviour
-# X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for linearized HH behaviour
+# X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for original HH behaviour
+X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for linearized HH behaviour
 
 # Split results into their respective variables
 V = X[:,0]
