@@ -35,3 +35,14 @@ def alpha_n(V):
 	return 0.01*(V+55.0)/(1.0 - sp.exp(-(V+55.0) / 10.0))
 def beta_n(V):
 	return 0.125*sp.exp(-(V+65) / 80.0)
+
+# Membrane currents (in uA/cm^2)
+#  Sodium (Na = element name)
+def I_Na(V, m, h):
+	return g_Na * m**3 * h * (V - E_Na) #* 1.9
+#  Potassium (K = element name)
+def I_K(V, n):
+	return g_K * n**4 * (V - E_K) #* 1.9
+#  Leak
+def I_L(V):
+	return g_L * (V - E_L)
