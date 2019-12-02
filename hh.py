@@ -46,3 +46,6 @@ def I_K(V, n):
 #  Leak
 def I_L(V):
 	return g_L * (V - E_L)
+
+# The time to integrate over
+t = sp.arange(0.0, 400.0, 0.1)
