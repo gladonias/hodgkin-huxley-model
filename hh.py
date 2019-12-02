@@ -73,6 +73,10 @@ def g_m(V, m, h):
 	return (3 * g_Na * (m**2) * h * (V - E_Na)) * (dalpham_dV(V) - m * (dalpham_dV(V) + dbetam_dV(V))) / (alpha_m(V) + beta_m(V))
 def L_m(V, m, h):
 	return 1 / (g_m(V, m, h) * (alpha_m(V) + beta_m(V)))
+def g_h(V, m, h):
+	return (g_Na * (m**3) * (V - E_Na)) * (dalphah_dV(V) - h * (dalphah_dV(V) + dbetah_dV(V))) / (alpha_h(V) + beta_h(V))
+def L_h(V, m, h):
+	return 1 / (g_h(V, m, h) * (alpha_h(V), beta_h(V)))
 
 
 # The time to integrate over
