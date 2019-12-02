@@ -89,7 +89,7 @@ def h_inf(V):
 # Pure conductances
 def G_K(V):
 	return g_K * (n_inf(V) ** 4) * V
-def G_Na(V, m, n):
+def G_Na(V, m, h):
 	return g_Na * (m ** 3) * h
 
 # Current on a RL branch
@@ -102,10 +102,21 @@ def current_RL(V, g, L, T):
 t = sp.arange(0.0, 400.0, 0.1)
 
 # Integrate
+def Linear_dALLdt(X, t):
+	V, m, h, n = X
+
+	# Calculate membrance potential and gating variables
+	dVdt = (I_inj(t) - I_L(V) - (G_K(V) * V + current_RL(V, g_n(V, n), L_n(V, n), t)) - (G_Na(V, m, h) * V + current_RL(V, g_m(V, m, h), L_m(V, m, h), t) + current_RL(V, g_h(V, m, h), L_h(V, m, h), t)))
+	dmdt = alpha_m(V)*(1.0-m) - beta_m(V)*m
+	dhdt = alpha_h(V)*(1.0-h) - beta_h(V)*h
+	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
+	return dVdt, dmdt, dhdt, dndt
+
+# Integrate
 def dALLdt(X, t):
 	V, m, h, n = X
 	
-	#calculate membrane potential & activation variables
+	# Calculate membrane potential and gating variables
 	dVdt = (I_inj(t) - I_Na(V, m, h) - I_K(V, n) - I_L(V)) / C_m
 	dmdt = alpha_m(V)*(1.0-m) - beta_m(V)*m
 	dhdt = alpha_h(V)*(1.0-h) - beta_h(V)*h
@@ -113,6 +124,7 @@ def dALLdt(X, t):
 	return dVdt, dmdt, dhdt, dndt
 
 X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t)
+X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32], t)
 
 # Split results into their respective variables
 V = X[:,0]
