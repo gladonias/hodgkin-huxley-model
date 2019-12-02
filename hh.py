@@ -106,7 +106,7 @@ def Linear_dALLdt(X, t):
 	V, m, h, n = X
 
 	# Calculate membrance potential and gating variables
-	dVdt = (I_inj(t) - I_L(V) - (G_K(V) * V + current_RL(V, g_n(V, n), L_n(V, n), t)) - (G_Na(V, m, h) * V + current_RL(V, g_m(V, m, h), L_m(V, m, h), t) + current_RL(V, g_h(V, m, h), L_h(V, m, h), t)))
+	dVdt = (I_inj(t) - I_L(V) - (G_K(V) * V + current_RL(V, g_n(V, n), L_n(V, n), t)) - (G_Na(V, m, h) * V + current_RL(V, g_m(V, m, h), L_m(V, m, h), t) + current_RL(V, g_h(V, m, h), L_h(V, m, h), t))) / C_m
 	dmdt = alpha_m(V)*(1.0-m) - beta_m(V)*m
 	dhdt = alpha_h(V)*(1.0-h) - beta_h(V)*h
 	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
