@@ -136,7 +136,7 @@ ik = I_K(V, n)
 il = I_L(V)
 
 # Plotting parameters
-plt.figure()
+plt.figure(figsize=(14, 20))
 
 plt.subplot(4,1,1)
 plt.title('Hodgkin-Huxley Neuron')
