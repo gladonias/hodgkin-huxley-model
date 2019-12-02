@@ -47,6 +47,9 @@ def I_K(V, n):
 def I_L(V):
 	return g_L * (V - E_L)
 
+def I_inj(t):
+	return 10*(t>100) - 10*(t>300)
+
 # The time to integrate over
 t = sp.arange(0.0, 400.0, 0.1)
 
