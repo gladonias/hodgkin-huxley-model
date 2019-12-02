@@ -76,7 +76,7 @@ def L_m(V, m, h):
 def g_h(V, m, h):
 	return (g_Na * (m**3) * (V - E_Na)) * (dalphah_dV(V) - h * (dalphah_dV(V) + dbetah_dV(V))) / (alpha_h(V) + beta_h(V))
 def L_h(V, m, h):
-	return 1 / (g_h(V, m, h) * (alpha_h(V), beta_h(V)))
+	return 1 / (g_h(V, m, h) * (alpha_h(V) + beta_h(V)))
 
 # Steady-state gating variables
 def n_inf(V):
