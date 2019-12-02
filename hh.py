@@ -80,11 +80,11 @@ def L_h(V, m, h):
 
 # Steady-state gating variables
 def n_inf(V):
-	return alpha_n / (alpha_n(V) + beta_n(V))
+	return alpha_n(V) / (alpha_n(V) + beta_n(V))
 def m_inf(V):
-	return alpha_m / (alpha_m(V) + beta_m(V))
+	return alpha_m(V) / (alpha_m(V) + beta_m(V))
 def h_inf(V):
-	return alpha_h / (alpha_h(V) + beta_h(V))
+	return alpha_h(V) / (alpha_h(V) + beta_h(V))
 
 # Pure conductances
 def G_K(V):
@@ -123,7 +123,7 @@ def dALLdt(X, t):
 	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
 	return dVdt, dmdt, dhdt, dndt
 
-X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t)
+# X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t)
 X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32], t)
 
 # Split results into their respective variables
