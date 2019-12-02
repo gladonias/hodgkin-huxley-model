@@ -86,6 +86,12 @@ def m_inf(V):
 def h_inf(V):
 	return alpha_h / (alpha_h(V) + beta_h(V))
 
+# Pure conductances
+def G_K(V):
+	return g_K * (n_inf(V) ** 4) * V
+def G_Na(V, m, n):
+	return g_Na * (m ** 3) * h
+
 # Current on a RL branch
 def current_RL(V, g, L, T):
 	R = 1/g
