@@ -78,6 +78,14 @@ def g_h(V, m, h):
 def L_h(V, m, h):
 	return 1 / (g_h(V, m, h) * (alpha_h(V), beta_h(V)))
 
+# Steady-state gating variables
+def n_inf(V):
+	return alpha_n / (alpha_n(V) + beta_n(V))
+def m_inf(V):
+	return alpha_m / (alpha_m(V) + beta_m(V))
+def h_inf(V):
+	return alpha_h / (alpha_h(V) + beta_h(V))
+
 # Current on a RL branch
 def current_RL(V, g, L, T):
 	R = 1/g
@@ -97,7 +105,7 @@ def dALLdt(X, t):
 	dhdt = alpha_h(V)*(1.0-h) - beta_h(V)*h
 	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
 	return dVdt, dmdt, dhdt, dndt
-	
+
 X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t)
 
 # Split results into their respective variables
