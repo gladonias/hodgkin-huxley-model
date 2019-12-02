@@ -123,8 +123,8 @@ def dALLdt(X, t):
 	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
 	return dVdt, dmdt, dhdt, dndt
 
-# X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t)
-X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32], t)
+X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for original HH behaviour
+# X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for linearized HH behaviour
 
 # Split results into their respective variables
 V = X[:,0]
@@ -136,33 +136,33 @@ ik = I_K(V, n)
 il = I_L(V)
 
 # Plotting parameters
-plt.figure(figsize=(14, 20))
+plt.figure(figsize=(8, 10))
 
 plt.subplot(4,1,1)
 plt.title('Hodgkin-Huxley Neuron')
-plt.plot(t, V, 'k')
+plt.plot(t, V)
 plt.ylabel('V (mV)')
 plt.grid(which='both', axis='both', linestyle=':')
 
 plt.subplot(4,1,2)
-plt.plot(t, ina, 'c', label='$I_{Na}$')
-plt.plot(t, ik, 'y', label='$I_{K}$')
-plt.plot(t, il, 'm', label='$I_{L}$')
+plt.plot(t, ina, label='$I_{Na}$')
+plt.plot(t, ik, label='$I_{K}$')
+plt.plot(t, il, label='$I_{L}$')
 plt.ylabel('Current')
 plt.grid(which='both', axis='both', linestyle=':')
 plt.legend()
 
 plt.subplot(4,1,3)
-plt.plot(t, m, 'r', label='m')
-plt.plot(t, h, 'g', label='h')
-plt.plot(t, n, 'b', label='n')
+plt.plot(t, m, label='m')
+plt.plot(t, h, label='h')
+plt.plot(t, n, label='n')
 plt.ylabel('Gating Value')
 plt.grid(which='both', axis='both', linestyle=':')
 plt.legend()
 
 plt.subplot(4,1,4)
-plt.plot(t, I_inj(t), 'k')
-plt.xlabel('t (ms)')
+plt.plot(t, I_inj(t))
+plt.xlabel('Time (ms)')
 plt.ylabel('$I_{inj}$ ($\\mu{A}/cm^2$)')
 plt.ylim(-1, 31)
 plt.grid(which='both', axis='both', linestyle=':')
