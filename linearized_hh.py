@@ -12,14 +12,16 @@ import matplotlib.pyplot as plt
 plt.style.use('seaborn-deep')
 plt.rcParams.update({'font.size': 12})
 
+# Values from https://doi.org/10.1016/S0006-3495(69)86446-5
+
 # Constants
 C_m  = 1.0 # membrane capacitance, in uF/cm^2
-g_Na = 120.0 # maximum conducances, in mS/cm^2
-g_K  = 36.0
+g_Na = 0.0106 #120.0 # maximum conducances, in mS/cm^2; S = mho
+g_K  = 0.3667 #36.0
 g_L  = 0.3
-E_Na = 50.0 # Nernst reversal potentials, in mV
-E_K  = -77.0
-E_L  = -54.387
+E_Na = 115.0 #50.0 # Nernst reversal potentials, in mV
+E_K  = -12.0 #-77.0
+E_L  = 10.5989 #-54.387
 
 # Channel gating kinetics
 # Functions of membrane voltage
@@ -104,7 +106,7 @@ def Linear_dALLdt(X, t):
 
 	return ddeltaVdt, ddeltamdt, ddeltahdt, ddeltandt
 
-X = odeint(Linear_dALLdt, [0, 0, 0, 0], t)
+X = odeint(Linear_dALLdt, [0, 0.0529, 0.5961, 0.3177], t)
 
 # Split results into their respective variables
 V = X[:,0]
