@@ -13,11 +13,11 @@ plt.style.use('seaborn-deep')
 plt.rcParams.update({'font.size': 12})
 
 # Constants
-C_m  =   1.0 # membrane capacitance, in uF/cm^2
+C_m  = 1.0 # membrane capacitance, in uF/cm^2
 g_Na = 120.0 # maximum conducances, in mS/cm^2
-g_K  =  36.0
-g_L  =   0.3
-E_Na =  50.0 # Nernst reversal potentials, in mV
+g_K  = 36.0
+g_L  = 0.3
+E_Na = 50.0 # Nernst reversal potentials, in mV
 E_K  = -77.0
 E_L  = -54.387
 
@@ -92,24 +92,19 @@ def G_K(V):
 def G_Na(V):
 	return g_Na * (m_inf(V) ** 3) * h_inf(V)
 
-# Current on a RL branch
-def current_RL(V, g, L, T):
-	R = 1/g
-	tau = R * L
-	return V * (1 - np.exp(-T/tau)) / R
-
 # The time to integrate over
 t = sp.arange(0.0, 400.0, 0.1)
 
 # Integrate
 def Linear_dALLdt(X, t):
-	deltaV, deltam, deltah, deltan, V = X
+	V = 0
+	deltaV, deltam, deltah, deltan = X
 
 	# Calculate membrance potential and gating variables
 	ddeltaVdt = (I_inj(t) - (g_L * deltaV) - (G_K(V) * deltaV + (4 * g_K * (n_inf(V)**3) * (V - E_K) * deltan)) - (G_Na(V) * deltaV + (3 * g_Na * (m_inf(V)**2) * h_inf(V) * (V - E_Na) * deltam) + (g_Na * (m_inf(V)**3) * (V - E_Na) * deltah))) / C_m
-	ddeltandt = dalphan_dV(V) * deltaV - (alpha_n(V) + beta_n(V)) * deltan - n_inf(V) * dalphan_dV(V) * deltaV - n_inf(V) * dbetan_dV * deltaV
-	ddeltamdt = dalpham_dV(V) * deltaV - (alpha_m(V) + beta_m(V)) * deltam - m_inf(V) * dalpham_dV(V) * deltaV - m_inf(V) * dbetam_dV * deltaV
-	ddeltahdt = dalphah_dV(V) * deltaV - (alpha_h(V) + beta_h(V)) * deltah - h_inf(V) * dalphah_dV(V) * deltaV - h_inf(V) * dbetah_dV * deltaV
+	ddeltandt = dalphan_dV(V) * deltaV - (alpha_n(V) + beta_n(V)) * deltan - n_inf(V) * dalphan_dV(V) * deltaV - n_inf(V) * dbetan_dV(V) * deltaV
+	ddeltamdt = dalpham_dV(V) * deltaV - (alpha_m(V) + beta_m(V)) * deltam - m_inf(V) * dalpham_dV(V) * deltaV - m_inf(V) * dbetam_dV(V) * deltaV
+	ddeltahdt = dalphah_dV(V) * deltaV - (alpha_h(V) + beta_h(V)) * deltah - h_inf(V) * dalphah_dV(V) * deltaV - h_inf(V) * dbetah_dV(V) * deltaV
 
 	return ddeltaVdt, ddeltamdt, ddeltahdt, ddeltandt
 
@@ -125,7 +120,7 @@ def dALLdt(X, t):
 	return dVdt, dmdt, dhdt, dndt
 
 # X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for original HH behaviour
-# X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32, 0], t) # Uncomment for linearized HH behaviour
+X = odeint(Linear_dALLdt, [0, 0, 0, 0], t) # Uncomment for linearized HH behaviour
 
 # Split results into their respective variables
 V = X[:,0]
