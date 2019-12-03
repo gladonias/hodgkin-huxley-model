@@ -64,19 +64,19 @@ def dalphah_dV(V):
 def dbetah_dV(V):
 	return np.exp(-(V/20)-(7/4)) / (20 * ((np.exp(-(V/20)-(7/4)) + 1) ** 2))
 
-# Coil-like elements for linearization
-def g_n(V, n):
-	return ((4 * g_K * n**3 * (V - E_K)) * (dalphan_dV(V) - n * (dalphan_dV(V) + dbetan_dV(V)))) / (alpha_n(V) + beta_n(V))
-def L_n(V, n):
-	return 1 / (g_n(V, n) * (alpha_n(V) + beta_n(V)))
-def g_m(V, m, h):
-	return (3 * g_Na * (m**2) * h * (V - E_Na)) * (dalpham_dV(V) - m * (dalpham_dV(V) + dbetam_dV(V))) / (alpha_m(V) + beta_m(V))
-def L_m(V, m, h):
-	return 1 / (g_m(V, m, h) * (alpha_m(V) + beta_m(V)))
-def g_h(V, m, h):
-	return (g_Na * (m**3) * (V - E_Na)) * (dalphah_dV(V) - h * (dalphah_dV(V) + dbetah_dV(V))) / (alpha_h(V) + beta_h(V))
-def L_h(V, m, h):
-	return 1 / (g_h(V, m, h) * (alpha_h(V) + beta_h(V)))
+# Linearized elements of the ionic channels
+def g_n(V):
+	return ((4 * g_K * (n_inf(V)**3) * (V - E_K)) * (dalphan_dV(V) - n_inf(V) * (dalphan_dV(V) + dbetan_dV(V)))) / (alpha_n(V) + beta_n(V))
+def L_n(V):
+	return 1 / (g_n(V) * (alpha_n(V) + beta_n(V)))
+def g_m(V):
+	return (3 * g_Na * (m_inf(V)**2) * h_inf(V) * (V - E_Na)) * (dalpham_dV(V) - m_inf(V) * (dalpham_dV(V) + dbetam_dV(V))) / (alpha_m(V) + beta_m(V))
+def L_m(V):
+	return 1 / (g_m(V) * (alpha_m(V) + beta_m(V)))
+def g_h(V):
+	return (g_Na * (m_inf(V)**3) * (V - E_Na)) * (dalphah_dV(V) - h_inf(V) * (dalphah_dV(V) + dbetah_dV(V))) / (alpha_h(V) + beta_h(V))
+def L_h(V):
+	return 1 / (g_h(V) * (alpha_h(V) + beta_h(V)))
 
 # Steady-state gating variables
 def n_inf(V):
