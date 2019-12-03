@@ -36,17 +36,13 @@ def alpha_n(V):
 def beta_n(V):
 	return 0.125*sp.exp(-(V+65) / 80.0)
 
-# Membrane currents (in uA/cm^2)
-#  Sodium (Na = element name)
-def I_Na(V, m, h):
-	return g_Na * m**3 * h * (V - E_Na) #* 1.9
-#  Potassium (K = element name)
-def I_K(V, n):
-	return g_K * n**4 * (V - E_K) #* 1.9
-#  Leak
-def I_L(V):
-	return g_L * (V - E_L)
+# Linearized membrane currents
+def deltaI_K(V, deltaV, deltan):
+	return G_K(V) * deltaV + (4 * g_K * (n_inf(V)**3) * (V - E_K) * deltan)
+def deltaI_Na(V, deltaV, deltam, deltah):
+	return G_Na(V) * deltaV + (3 * g_Na * (m_inf(V)**2) * h_inf(V) * (V - E_Na) * deltam) + (g_Na * (m_inf(V)**3) * (V - E_Na) * deltah)
 
+# External current
 def I_inj(t):
 	return 10*(t>100) - 10*(t>300)
 
@@ -101,54 +97,31 @@ def Linear_dALLdt(X, t):
 	deltaV, deltam, deltah, deltan = X
 
 	# Calculate membrance potential and gating variables
-	ddeltaVdt = (I_inj(t) - (g_L * deltaV) - (G_K(V) * deltaV + (4 * g_K * (n_inf(V)**3) * (V - E_K) * deltan)) - (G_Na(V) * deltaV + (3 * g_Na * (m_inf(V)**2) * h_inf(V) * (V - E_Na) * deltam) + (g_Na * (m_inf(V)**3) * (V - E_Na) * deltah))) / C_m
+	ddeltaVdt = (I_inj(t) - (g_L * deltaV) - deltaI_K(V, deltaV, deltan) - deltaI_Na(V, deltaV, deltam, deltah)) / C_m
 	ddeltandt = dalphan_dV(V) * deltaV - (alpha_n(V) + beta_n(V)) * deltan - n_inf(V) * dalphan_dV(V) * deltaV - n_inf(V) * dbetan_dV(V) * deltaV
 	ddeltamdt = dalpham_dV(V) * deltaV - (alpha_m(V) + beta_m(V)) * deltam - m_inf(V) * dalpham_dV(V) * deltaV - m_inf(V) * dbetam_dV(V) * deltaV
 	ddeltahdt = dalphah_dV(V) * deltaV - (alpha_h(V) + beta_h(V)) * deltah - h_inf(V) * dalphah_dV(V) * deltaV - h_inf(V) * dbetah_dV(V) * deltaV
 
 	return ddeltaVdt, ddeltamdt, ddeltahdt, ddeltandt
 
-# Integrate
-def dALLdt(X, t):
-	V, m, h, n = X
-	
-	# Calculate membrane potential and gating variables
-	dVdt = (I_inj(t) - I_Na(V, m, h) - I_K(V, n) - I_L(V)) / C_m
-	dmdt = alpha_m(V)*(1.0-m) - beta_m(V)*m
-	dhdt = alpha_h(V)*(1.0-h) - beta_h(V)*h
-	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
-	return dVdt, dmdt, dhdt, dndt
-
-# X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for original HH behaviour
-X = odeint(Linear_dALLdt, [0, 0, 0, 0], t) # Uncomment for linearized HH behaviour
+X = odeint(Linear_dALLdt, [0, 0, 0, 0], t)
 
 # Split results into their respective variables
 V = X[:,0]
 m = X[:,1]
 h = X[:,2]
 n = X[:,3]
-ina = I_Na(V, m, h)
-ik = I_K(V, n)
-il = I_L(V)
 
 # Plotting parameters
-plt.figure(figsize=(8, 10))
+plt.figure(figsize=(8, 8))
 
-plt.subplot(4,1,1)
+plt.subplot(3,1,1)
 plt.title('Hodgkin-Huxley Neuron')
 plt.plot(t, V)
 plt.ylabel('V (mV)')
 plt.grid(which='both', axis='both', linestyle=':')
 
-plt.subplot(4,1,2)
-plt.plot(t, ina, label='$I_{Na}$')
-plt.plot(t, ik, label='$I_{K}$')
-plt.plot(t, il, label='$I_{L}$')
-plt.ylabel('Current')
-plt.grid(which='both', axis='both', linestyle=':')
-plt.legend()
-
-plt.subplot(4,1,3)
+plt.subplot(3,1,2)
 plt.plot(t, m, label='m')
 plt.plot(t, h, label='h')
 plt.plot(t, n, label='n')
@@ -156,7 +129,7 @@ plt.ylabel('Gating Value')
 plt.grid(which='both', axis='both', linestyle=':')
 plt.legend()
 
-plt.subplot(4,1,4)
+plt.subplot(3,1,3)
 plt.plot(t, I_inj(t))
 plt.xlabel('Time (ms)')
 plt.ylabel('$I_{inj}$ ($\\mu{A}/cm^2$)')
@@ -165,5 +138,5 @@ plt.grid(which='both', axis='both', linestyle=':')
 
 plt.tight_layout()
 # plt.show()
-plt.savefig('hh.pdf', format='pdf', dpi=150)
+plt.savefig('linearized_hh.pdf', format='pdf', dpi=150)
 plt.close()
