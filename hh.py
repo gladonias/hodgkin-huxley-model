@@ -87,10 +87,10 @@ def h_inf(V):
 	return alpha_h(V) / (alpha_h(V) + beta_h(V))
 
 # Pure conductances
-def G_K(n):
-	return g_K * (n ** 4)
-def G_Na(m, h):
-	return g_Na * (m ** 3) * h
+def G_K(V):
+	return g_K * (n_inf(V) ** 4)
+def G_Na(V):
+	return g_Na * (m_inf(V) ** 3) * h_inf(V)
 
 # Current on a RL branch
 def current_RL(V, g, L, T):
