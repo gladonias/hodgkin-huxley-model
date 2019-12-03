@@ -1,4 +1,4 @@
-# Hodgkin-Huxley Model
+# Hodgkin-Huxley (HH) Model
 Original and linearized implementations in Python.
 
 ### References:
