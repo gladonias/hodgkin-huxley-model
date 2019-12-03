@@ -7,6 +7,6 @@ Original and linearized implementations in Python.
 * Linearized model described by [Mauro *et al* (1970)](https://doi.org/10.1085/jgp.55.4.497).
 
 
-** Not implemented yet **
+**Not implemented yet**
 
 * Ion concentration dynamics model proposed by [Barreto and Cressman (2001)](https://doi.org10.1007/s10867-010-9212-6).
