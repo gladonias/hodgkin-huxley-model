@@ -103,14 +103,15 @@ t = sp.arange(0.0, 400.0, 0.1)
 
 # Integrate
 def Linear_dALLdt(X, t):
-	V, m, h, n = X
+	deltaV, deltam, deltah, deltan, V = X
 
 	# Calculate membrance potential and gating variables
-	dVdt = (I_inj(t) - I_L(V) - (G_K(n) * V + current_RL(V, g_n(V, n), L_n(V, n), t)) - (G_Na(m, h) * V + current_RL(V, g_m(V, m, h), L_m(V, m, h), t) + current_RL(V, g_h(V, m, h), L_h(V, m, h), t))) / C_m
-	dmdt = alpha_m(V)*(1.0-m) - beta_m(V)*m
-	dhdt = alpha_h(V)*(1.0-h) - beta_h(V)*h
-	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
-	return dVdt, dmdt, dhdt, dndt
+	ddeltaVdt = (I_inj(t) - (g_L * deltaV) - (G_K(V) * deltaV + (4 * g_K * (n_inf(V)**3) * (V - E_K) * deltan)) - (G_Na(V) * deltaV + (3 * g_Na * (m_inf(V)**2) * h_inf(V) * (V - E_Na) * deltam) + (g_Na * (m_inf(V)**3) * (V - E_Na) * deltah))) / C_m
+	ddeltandt = dalphan_dV(V) * deltaV - (alpha_n(V) + beta_n(V)) * deltan - n_inf(V) * dalphan_dV(V) * deltaV - n_inf(V) * dbetan_dV * deltaV
+	ddeltamdt = dalpham_dV(V) * deltaV - (alpha_m(V) + beta_m(V)) * deltam - m_inf(V) * dalpham_dV(V) * deltaV - m_inf(V) * dbetam_dV * deltaV
+	ddeltahdt = dalphah_dV(V) * deltaV - (alpha_h(V) + beta_h(V)) * deltah - h_inf(V) * dalphah_dV(V) * deltaV - h_inf(V) * dbetah_dV * deltaV
+
+	return ddeltaVdt, ddeltamdt, ddeltahdt, ddeltandt
 
 # Integrate
 def dALLdt(X, t):
@@ -123,8 +124,8 @@ def dALLdt(X, t):
 	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
 	return dVdt, dmdt, dhdt, dndt
 
-X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for original HH behaviour
-# X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for linearized HH behaviour
+# X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t) # Uncomment for original HH behaviour
+# X = odeint(Linear_dALLdt, [-65, 0.05, 0.6, 0.32, 0], t) # Uncomment for linearized HH behaviour
 
 # Split results into their respective variables
 V = X[:,0]
