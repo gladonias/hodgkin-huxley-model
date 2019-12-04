@@ -1,4 +1,4 @@
-from scipy import signal
+from scipy import signal, constants
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -32,9 +32,11 @@ den = [gamma, (gamma**2)/C, gamma/(lamb*C)]
 sys = signal.TransferFunction(num, den)
 w, mag, phase = signal.bode(sys)
 
+hz = w / (2 * constants.pi)
+
 plt.figure()
-plt.semilogx(w, mag)    # Bode magnitude plot
-plt.xlabel('Frequency [rad/s]')
+plt.semilogx(hz, mag)    # Bode magnitude plot
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude [dB]')
 plt.grid(which='both', axis='both', linestyle=':')
 plt.margins(0, 0)
@@ -43,8 +45,8 @@ plt.savefig('mag_bode.pdf', format='pdf', dpi=150)
 plt.close()
 
 plt.figure()
-plt.semilogx(w, phase)  # Bode phase plot
-plt.xlabel('Frequency [rad/s]')
+plt.semilogx(hz, phase)  # Bode phase plot
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Phase [deg]')
 plt.grid(which='both', axis='both', linestyle=':')
 plt.margins(0, 0)
