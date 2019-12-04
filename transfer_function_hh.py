@@ -26,7 +26,7 @@ g_h = 1/r_h
 lamb = L_n + L_m + L_h
 gamma = G_T + g_n + g_m + g_h
 
-num = [gamma/C]
+num = [gamma/C, 0]
 den = [gamma, (gamma**2)/C, gamma/(lamb*C)]
 
 sys = signal.TransferFunction(num, den)
@@ -36,6 +36,8 @@ plt.figure()
 plt.semilogx(w, mag)    # Bode magnitude plot
 plt.xlabel('Frequency [rad/s]')
 plt.ylabel('Magnitude [dB]')
+plt.grid(which='both', axis='both', linestyle=':')
+plt.margins(0, 0)
 plt.tight_layout()
 plt.savefig('mag_bode.pdf', format='pdf', dpi=150)
 plt.close()
@@ -44,6 +46,8 @@ plt.figure()
 plt.semilogx(w, phase)  # Bode phase plot
 plt.xlabel('Frequency [rad/s]')
 plt.ylabel('Phase [deg]')
+plt.grid(which='both', axis='both', linestyle=':')
+plt.margins(0, 0)
 plt.tight_layout()
 plt.savefig('phase_bode.pdf', format='pdf', dpi=150)
 plt.close()
