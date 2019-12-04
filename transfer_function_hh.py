@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 plt.style.use('seaborn-deep')
 plt.rcParams.update({'font.size': 12})
 
+# Declare variables
 R_l = 3.33e3
 R_K = 2.72e3
 r_n = 1.2e3
@@ -24,3 +25,8 @@ g_m = 1/r_m
 g_h = 1/r_h
 lamb = L_n + L_m + L_h
 gamma = G_T + g_n + g_m + g_h
+
+num = [1/C]
+den = [1, gamma/C, 1/(lamb*C)]
+
+sys = signal.TransferFunction(num, den)
