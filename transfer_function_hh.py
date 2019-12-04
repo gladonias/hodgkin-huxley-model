@@ -1,4 +1,11 @@
+from scipy import signal
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
+# Plotting settings
+plt.style.use('seaborn-deep')
+plt.rcParams.update({'font.size': 12})
 
 R_l = 3.33e3
 R_K = 2.72e3
