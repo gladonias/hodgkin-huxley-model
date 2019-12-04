@@ -30,3 +30,16 @@ num = [1/C]
 den = [1, gamma/C, 1/(lamb*C)]
 
 sys = signal.TransferFunction(num, den)
+w, mag, phase = signal.bode(sys)
+
+plt.figure()
+plt.semilogx(w, mag)    # Bode magnitude plot
+plt.tight_layout()
+plt.savefig('mag_bode.pdf', format='pdf', dpi=150)
+plt.close()
+
+plt.figure()
+plt.semilogx(w, phase)  # Bode phase plot
+plt.tight_layout()
+plt.savefig('phase_bode.pdf', format='pdf', dpi=150)
+plt.close()
