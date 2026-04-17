@@ -23,7 +23,8 @@ E_L  = 10.5989 #-54.387
 # Channel gating kinetics
 # Functions of membrane voltage
 def alpha_m(V):
-	return 0.1*(V+40.0)/(1.0 - sp.exp(-(V+40.0) / 10.0))
+	x = (V + 40.0) / 10.0
+	return np.where(np.abs(x) < 1e-7, 1.0, 0.1 * (V + 40.0) / -np.expm1(-x))
 def beta_m(V):
 	return 4.0*sp.exp(-(V+65.0) / 18.0)
 def alpha_h(V):
@@ -31,7 +32,8 @@ def alpha_h(V):
 def beta_h(V):
 	return 1.0/(1.0 + sp.exp(-(V+35.0) / 10.0))
 def alpha_n(V):
-	return 0.01*(V+55.0)/(1.0 - sp.exp(-(V+55.0) / 10.0))
+	x = (V + 55.0) / 10.0
+	return np.where(np.abs(x) < 1e-7, 0.1, 0.01 * (V + 55.0) / -np.expm1(-x))
 def beta_n(V):
 	return 0.125*sp.exp(-(V+65) / 80.0)
 
