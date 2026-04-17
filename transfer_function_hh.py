@@ -29,27 +29,29 @@ gamma = G_T + g_n + g_m + g_h
 num = [gamma/C, 0]
 den = [gamma, (gamma**2)/C, gamma/(lamb*C)]
 
-sys = signal.TransferFunction(num, den)
-w, mag, phase = signal.bode(sys)
+tf_sys = signal.TransferFunction(num, den)
 
-hz = w / (2 * np.pi)
+if __name__ == '__main__':
+	w, mag, phase = signal.bode(tf_sys)
 
-plt.figure()
-plt.semilogx(hz, mag)    # Bode magnitude plot
-plt.xlabel('Frequency [Hz]')
-plt.ylabel('Magnitude [dB]')
-plt.grid(which='both', axis='both', linestyle=':')
-plt.margins(0, 0)
-plt.tight_layout()
-plt.savefig('mag_bode.pdf', format='pdf', dpi=150)
-plt.close()
+	hz = w / (2 * np.pi)
 
-plt.figure()
-plt.semilogx(hz, phase)  # Bode phase plot
-plt.xlabel('Frequency [Hz]')
-plt.ylabel('Phase [deg]')
-plt.grid(which='both', axis='both', linestyle=':')
-plt.margins(0, 0)
-plt.tight_layout()
-plt.savefig('phase_bode.pdf', format='pdf', dpi=150)
-plt.close()
+	plt.figure()
+	plt.semilogx(hz, mag)
+	plt.xlabel('Frequency [Hz]')
+	plt.ylabel('Magnitude [dB]')
+	plt.grid(which='both', axis='both', linestyle=':')
+	plt.margins(0, 0)
+	plt.tight_layout()
+	plt.savefig('mag_bode.pdf', format='pdf', dpi=150)
+	plt.close()
+
+	plt.figure()
+	plt.semilogx(hz, phase)
+	plt.xlabel('Frequency [Hz]')
+	plt.ylabel('Phase [deg]')
+	plt.grid(which='both', axis='both', linestyle=':')
+	plt.margins(0, 0)
+	plt.tight_layout()
+	plt.savefig('phase_bode.pdf', format='pdf', dpi=150)
+	plt.close()

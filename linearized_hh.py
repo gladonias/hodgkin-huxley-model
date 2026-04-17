@@ -1,7 +1,6 @@
 # Import required modules
 import os
 import numpy as np
-import scipy as sp
 from scipy.integrate import odeint
 import matplotlib
 if os.environ.get('DISPLAY') is None:
@@ -26,16 +25,16 @@ def alpha_m(V):
 	x = (V + 40.0) / 10.0
 	return np.where(np.abs(x) < 1e-7, 1.0, 0.1 * (V + 40.0) / -np.expm1(-x))
 def beta_m(V):
-	return 4.0*sp.exp(-(V+65.0) / 18.0)
+	return 4.0*np.exp(-(V+65.0) / 18.0)
 def alpha_h(V):
-	return 0.07*sp.exp(-(V+65.0) / 20.0)
+	return 0.07*np.exp(-(V+65.0) / 20.0)
 def beta_h(V):
-	return 1.0/(1.0 + sp.exp(-(V+35.0) / 10.0))
+	return 1.0/(1.0 + np.exp(-(V+35.0) / 10.0))
 def alpha_n(V):
 	x = (V + 55.0) / 10.0
 	return np.where(np.abs(x) < 1e-7, 0.1, 0.01 * (V + 55.0) / -np.expm1(-x))
 def beta_n(V):
-	return 0.125*sp.exp(-(V+65) / 80.0)
+	return 0.125*np.exp(-(V+65) / 80.0)
 
 # Linearized membrane currents
 def deltaI_K(V, deltaV, deltan):
@@ -89,10 +88,6 @@ def G_K(V):
 def G_Na(V):
 	return g_Na * (m_inf(V) ** 3) * h_inf(V)
 
-# The time to integrate over
-t = sp.arange(0.0, 400.0, 0.1)
-
-# Integrate
 def Linear_dALLdt(X, t):
 	V = 0
 	deltaV, deltam, deltah, deltan = X
@@ -105,40 +100,41 @@ def Linear_dALLdt(X, t):
 
 	return ddeltaVdt, ddeltamdt, ddeltahdt, ddeltandt
 
-# Initial conditions: zero perturbation for deltaV; steady-state gating at V=0
-X = odeint(Linear_dALLdt, [0, 0.0529, 0.5961, 0.3177], t)
+if __name__ == '__main__':
+	# The time to integrate over
+	t = np.arange(0.0, 400.0, 0.1)
 
-# Split results into their respective variables
-V = X[:,0]
-m = X[:,1]
-h = X[:,2]
-n = X[:,3]
+	# Initial conditions: zero perturbation for deltaV; steady-state gating at V=0
+	X = odeint(Linear_dALLdt, [0, 0.0529, 0.5961, 0.3177], t)
 
-# Plotting parameters
-plt.figure(figsize=(8, 8))
+	V = X[:,0]
+	m = X[:,1]
+	h = X[:,2]
+	n = X[:,3]
 
-plt.subplot(3,1,1)
-plt.title('Hodgkin-Huxley Neuron')
-plt.plot(t, V)
-plt.ylabel('V (mV)')
-plt.grid(which='both', axis='both', linestyle=':')
+	plt.figure(figsize=(8, 8))
 
-plt.subplot(3,1,2)
-plt.plot(t, m, label='m')
-plt.plot(t, h, label='h')
-plt.plot(t, n, label='n')
-plt.ylabel('Gating Value')
-plt.grid(which='both', axis='both', linestyle=':')
-plt.legend()
+	plt.subplot(3,1,1)
+	plt.title('Hodgkin-Huxley Neuron')
+	plt.plot(t, V)
+	plt.ylabel('V (mV)')
+	plt.grid(which='both', axis='both', linestyle=':')
 
-plt.subplot(3,1,3)
-plt.plot(t, I_inj(t))
-plt.xlabel('Time (ms)')
-plt.ylabel('$I_{inj}$ ($\\mu{A}/cm^2$)')
-plt.ylim(-1, 31)
-plt.grid(which='both', axis='both', linestyle=':')
+	plt.subplot(3,1,2)
+	plt.plot(t, m, label='m')
+	plt.plot(t, h, label='h')
+	plt.plot(t, n, label='n')
+	plt.ylabel('Gating Value')
+	plt.grid(which='both', axis='both', linestyle=':')
+	plt.legend()
 
-plt.tight_layout()
-# plt.show()
-plt.savefig('linearized_hh.pdf', format='pdf', dpi=150)
-plt.close()
+	plt.subplot(3,1,3)
+	plt.plot(t, I_inj(t))
+	plt.xlabel('Time (ms)')
+	plt.ylabel('$I_{inj}$ ($\\mu{A}/cm^2$)')
+	plt.ylim(-1, 31)
+	plt.grid(which='both', axis='both', linestyle=':')
+
+	plt.tight_layout()
+	plt.savefig('linearized_hh.pdf', format='pdf', dpi=150)
+	plt.close()
