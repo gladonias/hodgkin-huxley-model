@@ -1,15 +1,12 @@
 # Import required modules
+import os
 import numpy as np
 import scipy as sp
 from scipy.integrate import odeint
-from scipy import stats
-import scipy.linalg as lin
-import matplotlib       # To use plt.show(), comment this line.
-matplotlib.use('Agg')   # To use plt.show(), comment this line.
+import matplotlib
+if os.environ.get('DISPLAY') is None:
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
-# Plotting settings
-plt.style.use('seaborn-deep')
 plt.rcParams.update({'font.size': 12})
 
 # Values from https://doi.org/10.1016/S0006-3495(69)86446-5
@@ -98,7 +95,7 @@ def Linear_dALLdt(X, t):
 	V = 0
 	deltaV, deltam, deltah, deltan = X
 
-	# Calculate membrance potential and gating variables
+	# Calculate membrane potential and gating variables
 	ddeltaVdt = (I_inj(t) - (g_L * deltaV) - deltaI_K(V, deltaV, deltan) - deltaI_Na(V, deltaV, deltam, deltah)) / C_m
 	ddeltandt = dalphan_dV(V) * deltaV - (alpha_n(V) + beta_n(V)) * deltan - n_inf(V) * dalphan_dV(V) * deltaV - n_inf(V) * dbetan_dV(V) * deltaV
 	ddeltamdt = dalpham_dV(V) * deltaV - (alpha_m(V) + beta_m(V)) * deltam - m_inf(V) * dalpham_dV(V) * deltaV - m_inf(V) * dbetam_dV(V) * deltaV

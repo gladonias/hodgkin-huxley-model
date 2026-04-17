@@ -1,10 +1,10 @@
-from scipy import signal, constants
+import os
+import numpy as np
+from scipy import signal
 import matplotlib
-matplotlib.use('Agg')
+if os.environ.get('DISPLAY') is None:
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
-# Plotting settings
-plt.style.use('seaborn-deep')
 plt.rcParams.update({'font.size': 12})
 
 # Declare variables
@@ -32,7 +32,7 @@ den = [gamma, (gamma**2)/C, gamma/(lamb*C)]
 sys = signal.TransferFunction(num, den)
 w, mag, phase = signal.bode(sys)
 
-hz = w / (2 * constants.pi)
+hz = w / (2 * np.pi)
 
 plt.figure()
 plt.semilogx(hz, mag)    # Bode magnitude plot
