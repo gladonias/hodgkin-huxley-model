@@ -105,6 +105,7 @@ def Linear_dALLdt(X, t):
 
 	return ddeltaVdt, ddeltamdt, ddeltahdt, ddeltandt
 
+# Initial conditions: zero perturbation for deltaV; steady-state gating at V=0
 X = odeint(Linear_dALLdt, [0, 0.0529, 0.5961, 0.3177], t)
 
 # Split results into their respective variables

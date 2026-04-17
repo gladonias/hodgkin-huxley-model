@@ -77,6 +77,7 @@ def dALLdt(X, t):
 	dndt = alpha_n(V)*(1.0-n) - beta_n(V)*n
 	return dVdt, dmdt, dhdt, dndt
 
+# Initial conditions: V_rest = -65 mV, m_inf(-65), h_inf(-65), n_inf(-65)
 X = odeint(dALLdt, [-65, 0.05, 0.6, 0.32], t)
 
 # Split results into their respective variables
