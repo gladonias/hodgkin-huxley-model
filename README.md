@@ -1,6 +1,27 @@
 # Hodgkin-Huxley (HH) Model
 Original and linearized implementations in Python.
 
+### Setup
+
+```
+pip install -r requirements.txt
+```
+
+### Usage
+
+```
+python original_hh.py
+python linearized_hh.py
+python transfer_function_hh.py
+```
+
+### Testing
+
+```
+pip install pytest
+pytest test_hh.py -v
+```
+
 ### References:
 * Python implementation of the original model adapted from this [GitHub Gist](https://gist.github.com/slarson/37463b35ef8606629d2e).
 * Original model proposed by [Hodgkin and Huxley (1952)](https://doi.org/10.1113/jphysiol.1952.sp004764).
@@ -9,4 +30,4 @@ Original and linearized implementations in Python.
 
 **Not implemented yet:**
 
-* Ion concentration dynamics model proposed by [Barreto and Cressman (2001)](https://doi.org10.1007/s10867-010-9212-6).
+* Ion concentration dynamics model proposed by [Barreto and Cressman (2011)](https://doi.org/10.1007/s10867-010-9212-6).
